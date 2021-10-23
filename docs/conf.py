@@ -1,13 +1,13 @@
-project = 'LensKit HPF'
+project = 'LensKit Implicit'
 copyright = '2021 Boise State University'
 author = 'Michael D. Ekstrand'
 
-import lenskit_hpf
+import lenskit_implicit
 
 # The short X.Y version
-version = '.'.join(lenskit_hpf.__version__.split('.')[:2])
+version = '.'.join(lenskit_implicit.__version__.split('.')[:2])
 # The full version, including alpha/beta/rc tags
-release = lenskit_hpf.__version__
+release = lenskit_implicit.__version__
 
 extensions = [
     'sphinx.ext.napoleon',
