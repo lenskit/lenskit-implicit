@@ -3,10 +3,19 @@ import inspect
 import pandas as pd
 import numpy as np
 
-from ..data import sparse_ratings
-from . import Recommender, Predictor
+from lenskit.data import sparse_ratings
+from lenskit.algorithms import Recommender, Predictor
+
+from implicit.als import AlternatingLeastSquares
+from implicit.bpr import BayesianPersonalizedRanking
 
 _logger = logging.getLogger(__name__)
+
+__all__ = [
+    'BaseRec',
+    'ALS',
+    'BPR',
+]
 
 
 class BaseRec(Recommender, Predictor):
@@ -108,7 +117,7 @@ class ALS(BaseRec):
         Construct an ALS recommender.  The arguments are passed as-is to
         :py:class:`implicit.als.AlternatingLeastSquares`.
         """
-        from implicit.als import AlternatingLeastSquares
+
         super().__init__(AlternatingLeastSquares(*args, **kwargs))
 
 
@@ -121,5 +130,4 @@ class BPR(BaseRec):
         Construct an ALS recommender.  The arguments are passed as-is to
         :py:class:`implicit.als.BayesianPersonalizedRanking`.
         """
-        from implicit.bpr import BayesianPersonalizedRanking
         super().__init__(BayesianPersonalizedRanking(*args, **kwargs))
