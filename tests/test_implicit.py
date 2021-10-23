@@ -47,6 +47,7 @@ def test_implicit_als_train_rec():
 
 @mark.slow
 @mark.eval
+@mark.skipif(not lktu.ml100k.available, reason="ML100K not downloaded")
 def test_implicit_als_batch_accuracy():
     import lenskit.crossfold as xf
     from lenskit import batch, topn
