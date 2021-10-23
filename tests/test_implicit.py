@@ -24,7 +24,6 @@ simple_df = pd.DataFrame({'item': [1, 1, 2, 3],
 
 
 @mark.slow
-@mark.skipif(not have_implicit, reason='implicit not installed')
 def test_implicit_als_train_rec():
     algo = ALS(25, use_gpu=False)
     assert algo.factors == 25
@@ -48,8 +47,6 @@ def test_implicit_als_train_rec():
 
 @mark.slow
 @mark.eval
-@mark.skipif(not have_implicit, reason='implicit not installed')
-@mark.skipif(not lktu.ml100k.available, reason='ML100K data not present')
 def test_implicit_als_batch_accuracy():
     import lenskit.crossfold as xf
     from lenskit import batch, topn
@@ -83,7 +80,6 @@ def test_implicit_als_batch_accuracy():
 
 
 @mark.slow
-@mark.skipif(not have_implicit, reason='implicit not installed')
 def test_implicit_bpr_train_rec():
     algo = BPR(25, use_gpu=False)
     assert algo.factors == 25
@@ -108,10 +104,9 @@ def test_implicit_bpr_train_rec():
     assert all(r2 == recs)
 
 
-@mark.skipif(not have_implicit, reason='implicit not installed')
 def test_implicit_pickle_untrained(tmp_path):
     mf = tmp_path / 'bpr.dat'
-    algo = BPR(25)
+    algo = BPR(25, use_gpu=False)
 
     with mf.open('wb') as f:
         pickle.dump(algo, f)
