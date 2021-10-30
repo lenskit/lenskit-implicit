@@ -27,7 +27,7 @@ dynamic = ["description", "version"]
 
 [project.urls]
 homepage = "https://lkpy.lenskit.org/projects/implicit"
-GitHub = "https://github.com/lenskit/lenskit-hpf"
+GitHub = "https://github.com/lenskit/lenskit-implicit"
 
 [project.optional-dependencies]
 test = [
