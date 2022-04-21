@@ -20,8 +20,8 @@ readme = "README.md"
 license = { file="LICENSE.md" }
 requires-python = ">= 3.7"
 dependencies = [
-    "lenskit[doc] @ git+https://github.com/lenskit/lkpy.git#main",
-    "implicit ==0.4.*"
+    "lenskit ==0.14.*",
+    "implicit ==0.5.*"
 ]
 dynamic = ["description", "version"]
 
@@ -41,6 +41,9 @@ dev = [
     "flake8 >= 3",
     "coverage >= 5",
     "pytest-cov >= 2.12",
+]
+doc = [
+    "lenskit[doc]"
 ]
 
 [tool.flit.module]
