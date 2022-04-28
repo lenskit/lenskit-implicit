@@ -43,7 +43,9 @@ dev = [
     "pytest-cov >= 2.12",
 ]
 doc = [
-    "lenskit[doc]"
+    "sphinx >=4",
+    "sphinxcontrib_rtd_theme",
+    "sphinxcontrib-biblatex",
 ]
 
 [tool.flit.module]
