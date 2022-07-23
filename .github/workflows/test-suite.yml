@@ -36,6 +36,7 @@ jobs:
       id: setup
       with:
         python-version: ${{matrix.python}}
+        conda-type: micromamba
 
     - name: 🔎 Inspect environment
       run: |
