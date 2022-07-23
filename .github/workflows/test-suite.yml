@@ -72,7 +72,6 @@ jobs:
     - name: Install Python deps
       run: |
         pip install -U flit
-        flit install --deps=production --extras=dev
 
     - name: Build distribution
       run: flit build
