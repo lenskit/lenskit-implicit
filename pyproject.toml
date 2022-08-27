@@ -21,7 +21,7 @@ license = { file="LICENSE.md" }
 requires-python = ">= 3.7"
 dependencies = [
     "lenskit ==0.14.*",
-    "implicit ==0.4.*"
+    "implicit >=0.5,<0.7"
 ]
 dynamic = ["description", "version"]
 

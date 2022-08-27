@@ -39,14 +39,16 @@ class BaseRec(Recommender, Predictor):
 
     def __init__(self, delegate):
         self.delegate = delegate
+        self.weight = 1.0
 
     def fit(self, ratings, **kwargs):
         matrix, users, items = sparse_ratings(ratings, scipy=True)
-        iur = matrix.T.tocsr()
+        uir = matrix.tocsr()
+        uir.data *= self.weight
 
-        _logger.info('training %s on %s matrix (%d nnz)', self.delegate, iur.shape, iur.nnz)
+        _logger.info('training %s on %s matrix (%d nnz)', self.delegate, uir.shape, uir.nnz)
 
-        self.delegate.fit(iur)
+        self.delegate.fit(uir)
 
         self.matrix_ = matrix
         self.user_index_ = users
@@ -60,17 +62,24 @@ class BaseRec(Recommender, Predictor):
         except KeyError:
             return pd.DataFrame({'item': []})
 
+        matrix = self.matrix_[[uid], :]
+
         if candidates is None:
             i_n = n if n is not None else len(self.item_index_)
-            recs = self.delegate.recommend(uid, self.matrix_, N=i_n)
+            recs, scores = self.delegate.recommend(uid, matrix, N=i_n)
         else:
             cands = self.item_index_.get_indexer(candidates)
             cands = cands[cands >= 0]
-            recs = self.delegate.rank_items(uid, self.matrix_, cands)
+            recs, scores = self.delegate.recommend(uid, matrix, items=cands)
 
         if n is not None:
             recs = recs[:n]
-        rec_df = pd.DataFrame.from_records(recs, columns=['item_pos', 'score'])
+            scores = scores[:n]
+
+        rec_df = pd.DataFrame({
+            'item_pos': recs,
+            'score': scores,
+        })
         rec_df['item'] = self.item_index_[rec_df.item_pos]
         return rec_df.loc[:, ['item', 'score']]
 
@@ -112,13 +121,15 @@ class ALS(BaseRec):
     """
     LensKit interface to :py:mod:`implicit.als`.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, weight=40.0, **kwargs):
         """
         Construct an ALS recommender.  The arguments are passed as-is to
-        :py:class:`implicit.als.AlternatingLeastSquares`.
+        :py:class:`implicit.als.AlternatingLeastSquares`.  The `weight`
+        parameter controls the confidence weight for positive examples.
         """
 
         super().__init__(AlternatingLeastSquares(*args, **kwargs))
+        self.weight = weight
 
 
 class BPR(BaseRec):

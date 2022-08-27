@@ -12,7 +12,7 @@ defaults:
     shell: bash -l {0}
 
 jobs:
-  test:
+  test-conda:
     name: Test with Python ${{matrix.python}} on ${{matrix.platform}}
     runs-on: ${{matrix.platform}}-latest
     strategy:
@@ -52,10 +52,44 @@ jobs:
     - name: Upload coverage
       uses: codecov/codecov-action@v1
 
+  test-vanilla:
+    name: Test with vanilla Python ${{matrix.python}} on ${{matrix.platform}}
+    runs-on: ${{matrix.platform}}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+        - ubuntu
+        python:
+        - "3.7"
+        - "3.8"
+        - "3.9"
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Set up Python and environment
+      uses: lenskit/lkbuild/actions/setup-vanilla-env@main
+      with:
+        python-version: ${{matrix.python}}
+
+    - name: Run tests
+      run: |
+        python -m pytest --cov=lenskit_implicit -v
+
+    - name: Aggregate coverage data
+      run: coverage xml
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v1
+
   sdist:
     name: Build Source Packages
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test-conda, test-vanilla]
 
     steps:
     - uses: actions/checkout@v2
