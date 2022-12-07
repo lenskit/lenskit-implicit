@@ -25,7 +25,7 @@ simple_df = pd.DataFrame({'item': [1, 1, 2, 3],
 
 @mark.slow
 def test_implicit_als_train_rec():
-    algo = ALS(25, use_gpu=False)
+    algo = ALS(25)
     assert algo.factors == 25
     ratings = lktu.ml_test.ratings
 
@@ -34,6 +34,8 @@ def test_implicit_als_train_rec():
 
     recs = algo.recommend(100, n=20)
     assert len(recs) == 20
+
+    preds = algo.predict_for_user(100, items=[1, 377])
 
     _log.info('serializing implicit model')
     mod = pickle.dumps(algo)

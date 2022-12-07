@@ -1,5 +1,6 @@
 *.log
 *.pdb
+/venv-*/
 
 __pycache__/
 *.pyc

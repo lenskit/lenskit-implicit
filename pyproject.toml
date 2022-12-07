@@ -21,7 +21,7 @@ license = { file="LICENSE.md" }
 requires-python = ">= 3.7"
 dependencies = [
     "lenskit ==0.14.*",
-    "implicit >=0.5,<0.7"
+    "implicit >=0.6.1",
 ]
 dynamic = ["description", "version"]
 
@@ -67,3 +67,6 @@ channels = [
     "conda-forge",
     "lenskit",
 ]
+
+[tool.conda-lock.dependencies]
+implicit = { source = "pypi" }

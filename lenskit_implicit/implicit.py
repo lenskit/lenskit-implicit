@@ -93,9 +93,13 @@ class BaseRec(Recommender, Predictor):
         iids = iids[iids >= 0]
 
         ifs = self.delegate.item_factors[iids]
-        uf = self.delegate._user_factor(uid, None, False)
-        scores = ifs.dot(uf)
-        scores = pd.Series(scores, index=self.item_index_[iids])
+        uf = self.delegate.user_factors[uid]
+        # convert back if these are on CUDA
+        if hasattr(ifs, 'to_numpy'):
+            ifs = ifs.to_numpy()
+            uf = uf.to_numpy()
+        scores = np.dot(ifs, uf.T)
+        scores = pd.Series(np.ravel(scores), index=self.item_index_[iids])
         return scores.reindex(items)
 
     def __getattr__(self, name):
