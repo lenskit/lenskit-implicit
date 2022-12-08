@@ -50,7 +50,8 @@ def test_implicit_als_train_rec():
 @mark.slow
 @mark.eval
 @mark.skipif(not lktu.ml100k.available, reason="ML100K not downloaded")
-def test_implicit_als_batch_accuracy():
+@mark.parametrize('n_jobs', [1, None])
+def test_implicit_als_batch_accuracy(n_jobs):
     import lenskit.crossfold as xf
     from lenskit import batch, topn
 
@@ -65,7 +66,7 @@ def test_implicit_als_batch_accuracy():
         algo.fit(train)
         users = test.user.unique()
         _log.info('testing %d users', len(users))
-        recs = batch.recommend(algo, users, 100)
+        recs = batch.recommend(algo, users, 100, n_jobs=n_jobs)
         return recs
 
     folds = list(xf.partition_users(ratings, 5, xf.SampleFrac(0.2)))
