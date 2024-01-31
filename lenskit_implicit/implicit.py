@@ -125,7 +125,7 @@ class BaseRec(Recommender, Predictor):
 
 class ALS(BaseRec):
     """
-    LensKit interface to :py:mod:`implicit.als`.
+    LensKit interface to :py:mod:`implicit.cpu.als` (or GPU version).
     """
     def __init__(self, *args, weight=40.0, **kwargs):
         """
@@ -140,7 +140,7 @@ class ALS(BaseRec):
 
 class BPR(BaseRec):
     """
-    LensKit interface to :py:mod:`implicit.bpr`.
+    LensKit interface to :py:mod:`implicit.cpu.bpr` (or GPU version).
     """
     def __init__(self, *args, **kwargs):
         """
