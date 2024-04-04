@@ -12,7 +12,7 @@ It can be installed with the ``lenskit-implicit`` package::
     pip install lenskit-implicit
     conda install -c conda-forge lenskit-implicit
 
-.. _implicit: https://implicit.readthedocs.io/en/latest/
+.. _implicit: https://benfred.github.io/implicit/
 
 .. autoclass:: ALS
     :members:
